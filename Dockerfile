@@ -1,7 +1,7 @@
 FROM alpine:3.7
 
-ENV run2=foo
-ENV run3=bar
+ENV run2=test-service
+ENV run3=another-parameter
 
 RUN apk update && apk add --no-cache curl
 
