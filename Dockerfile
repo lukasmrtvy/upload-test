@@ -1,9 +1,9 @@
 FROM alpine:3.7
 
-ENV run2=test-service
-ENV run3=another-parameter
+ENV name=test-service
+ENV type=download-link
 
 RUN apk update && apk add --no-cache curl
 
-RUN touch test.file && run=$(curl --upload-file test.file https://transfer.sh/test.file) && \
-curl -X POST -H "Content-Type: application/json" -d '{"value1":"'"${run}"'","value2":"'"${run1}"'","value3":"'"${run2}"'"}' https://maker.ifttt.com/trigger/upload/with/key/cPy1lybKqXvF7uT3LvDTkk
+RUN touch test.file && url=$(curl --upload-file test.file https://transfer.sh/test.file) && \
+curl -X POST -H "Content-Type: application/json" -d '{"value1":"'"${name}"'","value2":"'"${type}"'","value3":"'"${url}"'"}' https://maker.ifttt.com/trigger/upload/with/key/cPy1lybKqXvF7uT3LvDTkk
