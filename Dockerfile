@@ -1,7 +1,7 @@
 FROM alpine:3.7
 
 
-RUN apk update && apk install --no-cache curl
+RUN apk update && apk add --no-cache curl
 
 RUN touch test.file && run=$(curl --upload-file test.file https://transfer.sh/test.file) && echo "run"
 
