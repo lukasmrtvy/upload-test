@@ -7,3 +7,9 @@ RUN apk update && apk add --no-cache curl
 
 RUN touch test.file && url=$(curl --upload-file test.file https://transfer.sh/test.file) && \
 curl -X POST -H "Content-Type: application/json" -d '{"value1":"'"${name}"'","value2":"'"${type}"'","value3":"'"${url}"'"}' https://maker.ifttt.com/trigger/upload/with/key/cPy1lybKqXvF7uT3LvDTkk
+
+RUN touch test2.file && url=$(curl -F "file=@test2.file" https://file.io) && \
+curl -X POST -H "Content-Type: application/json" -d '{"value1":"'"${name}"'","value2":"'"${type}"'","value3":"'"${url}"'"}' https://maker.ifttt.com/trigger/upload/with/key/cPy1lybKqXvF7uT3LvDTkk
+
+
+
