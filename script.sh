@@ -69,9 +69,9 @@ _getCommitRange () {
 _getProjectsToChange () {
   action=$1
 
-  declare -A pnames
-  declare -A ppaths
-  declare -A pmethods
+  declare -a pnames
+  declare -a ppaths
+  declare -a pmethods
 
   if [ -n "$PROJECT" ]; then
     projects=( "$(jq -r  '.[].name' "$projectsPath")" )
