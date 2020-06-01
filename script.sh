@@ -107,6 +107,8 @@ _getProjectsToChange () {
         echo "${#pnames[@]}"
         echo "${#ppaths[@]}"
         echo "${#pmethods[@]}"
+        
+        if (( "${#pnames[@]}" > 0 )); then echo zajimave; fi
       fi
     done
 
