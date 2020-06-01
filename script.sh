@@ -90,7 +90,7 @@ _getProjectsToChange () {
 
     fi
   else
-    jq -r  '.[] | "" + .name + " " + .path + " " + .login' "$projectsPath" | while read -r pname ppath pmethod ; do
+     while read -r pname ppath pmethod ; do
       echo "A: $pname $ppath $pmethod"
       if ! git diff --exit-code --quiet "$range" -- "$ppath"; then
         echo "B: $pname $ppath $pmethod"
@@ -114,7 +114,7 @@ _getProjectsToChange () {
         fi
         
       fi
-    done
+    done < <(jq -r  '.[] | "" + .name + " " + .path + " " + .login' "$projectsPath")
   fi
 
    echo "${#pnames[@]}"
