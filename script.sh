@@ -155,8 +155,8 @@ _cliLogin () {
     while IFS= read -r line <&3
     do
         if [[ $line =~ $regular ]]; then
-            printf '%s' "$line"
-            _logMessage info "Login invoked. Will timeout in $maxtimeout"
+            _logMessage info "Login will be invoked. Will timeout in $maxtimeout"
+            printf '%s' "$line\n"
             wait $pid
         else
             _logMessage info "Unknown error. Hint: Check regex vs output"
