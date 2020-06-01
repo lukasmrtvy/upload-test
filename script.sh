@@ -100,6 +100,10 @@ _getProjectsToChange () {
         pnames+=( "$pname" )
         ppaths+=( "$ppath" )
         pmethods+=( "$pmethod" )
+        
+        echo "${pnames[@]}"
+        echo "${ppaths[@]}"
+        echo "${pmethods[@]}"
       fi
     done
 
