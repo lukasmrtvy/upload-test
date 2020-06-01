@@ -76,7 +76,7 @@ _getProjectsToChange () {
       _logMessage info "Project: $PROJECT will be changed."
 
       ppath=$(jq --arg pname "$PROJECT" -r  '.[] |  select(.name == $pname ).path' "$projectsPath")
-      pmethod=$(jq --arg pname "$PROJECT" -r  '.[] |  select(.name == $pname ).login-method' "$projectsPath")
+      pmethod=$(jq --arg pname "$PROJECT" -r  '.[] |  select(.name == $pname ).["login-method"]' "$projectsPath")
 
       pnames+=("$PROJECT")
       ppaths+=("$ppath")
