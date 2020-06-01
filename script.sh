@@ -156,7 +156,7 @@ _cliLogin () {
     do
         if [[ $line =~ $regular ]]; then
             _logMessage info "Login will be invoked. Will timeout in $maxtimeout"
-            printf '%s' "$line\n"
+            printf '%s\n' "$line"
             wait $pid
         else
             _logMessage info "Unknown error. Hint: Check regex vs output"
