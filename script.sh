@@ -98,48 +98,12 @@ _getProjectsToChange () {
   fi
 
   if (( "${#pnames[@]}" > 0 )); then
-   if [ "$action" == "validate" ]; then
-      for i in ${#pnames[@]}; do
-         TERRAGRUNT_DISABLE_INIT="true" terragrunt validate --terragrunt-working-dir "${ppaths[i]}"
-      done
-   elif [ "$action" == "plan" ]; then
-     # TODO: loop over unique logins
-     readarray -td '' umethods< <(printf '%s\0' "${pmethods[@]}" | LC_ALL=C sort -zu)
-     for m in "${umethods[@]}"; do
-      _cliLogin "$m"
-     done
-     for i in ${#pnames[@]}; do
-        terragrunt plan --terragrunt-working-dir "${ppaths[i]}"
-     done
-     for m in "${umethods[@]}"; do
-      _cliLogout "$m"
-     done
-   elif [ "$action" == "apply" ]; then
-     readarray -td '' umethods< <(printf '%s\0' "${pmethods[@]}" | LC_ALL=C sort -zu)
-     for m in "${umethods[@]}"; do
-      _cliLogin "$m"
-     done
-     for i in ${#pnames[@]}; do
-        terragrunt apply --auto-apply --terragrunt-working-dir "${ppaths[i]}"
-     done
-     for m in "${umethods[@]}"; do
-      _cliLogout "$m"
-     done
-   elif [ "$action" == "destroy" ]; then
-     readarray -td '' umethods< <(printf '%s\0' "${pmethods[@]}" | LC_ALL=C sort -zu)
-     for m in "${umethods[@]}"; do
-      _cliLogin "$m"
-     done
-     for i in ${#pnames[@]}; do
-        terragrunt destroy --auto-apply --terragrunt-working-dir "${ppaths[i]}"
-     done
-     for m in "${umethods[@]}"; do
-      _cliLogout "$m"
-     done
-   fi
+    for i in ${#pnames[@]}; do
+       echo "zaciname"
+       echo "${ppaths[i]}"
+    done   
   elif (( "${#pnames[@]}" == 0 )); then
-   echo "no changes"
-   exit 0
+    echo "no changes"
   fi
 
 }
