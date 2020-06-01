@@ -23,7 +23,7 @@ _validate () {
   fi
 
   for i in .name .path; do
-    if ! jq --arg type $i -c '(unique_by($type)|length) as $unique | length == $unique' "$projectsPath" ; then
+    if ! jq --arg type $i -e -c '(unique_by($type)|length) as $unique | length == $unique' "$projectsPath" ; then
       _logMessage error "Name and Path must be unique."
       fail=true
     fi
