@@ -141,7 +141,7 @@ _getProjectsToChange () {
          _cliLogout "$m"
         done
       fi
-    elif (( "${#pnames[@]}" = 0 )); then
+    elif (( "${#pnames[@]}" == 0 )); then
       echo "no changes"
       exit 0
     fi
