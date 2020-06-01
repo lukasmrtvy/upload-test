@@ -3,6 +3,8 @@
 projectsPath=projects.json
 schemaPath=schema.json
 
+set -xe
+
 _logMessage () {
   type=$1
   message=$2
