@@ -138,7 +138,7 @@ if (( "${#pnames[@]}" > 0 )); then
    done
  fi
 elif (( "${#pnames[@]}" == 0 )); then
- echo "no changes"
+ _logMessage info "No changes detected."
  exit 0
 fi
 
