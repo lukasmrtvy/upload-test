@@ -86,7 +86,7 @@ _getProjectsToChange () {
   else
      while read -r pname ppath pmethod ; do
       if ! git diff --exit-code --quiet "$range" -- "$ppath"; then
-        echo "B: $pname $ppath $pmethod"
+      
         _logMessage info "Project: $pname will be changed."
 
         pnames+=( "$pname" )
