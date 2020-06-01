@@ -76,7 +76,7 @@ _getProjectsToChange () {
       _logMessage info "Project: $PROJECT will be changed."
 
       ppath=$(jq --arg pname "$PROJECT" -r  '.[] |  select(.name == $pname ).path' "$projectsPath")
-      pmethod=$(jq --arg pname "$PROJECT" -r  '.[] |  select(.name == $pname ).["login-method"]' "$projectsPath")
+      pmethod=$(jq --arg pname "$PROJECT" -r  '.[] |  select(.name == $pname ).login' "$projectsPath")
 
       pnames+=("$PROJECT")
       ppaths+=("$ppath")
@@ -84,14 +84,14 @@ _getProjectsToChange () {
 
     fi
   else
-    jq -r  '.[] | "" + .name + " " + .path' "$projectsPath" | while read -r name path login-method; do
+    jq -r  '.[] | "" + .name + " " + .path' "$projectsPath" | while read -r name path login; do
       if ! git diff --exit-code --quiet "$range" -- "$path"
       then
         _logMessage info "Project: $name will be changed."
 
         pnames+=("$name")
         ppaths+=("$path")
-        pmethods+=("$login-method")
+        pmethods+=("$login")
       fi
     done
 
@@ -101,7 +101,7 @@ _getProjectsToChange () {
             TERRAGRUNT_DISABLE_INIT="true" terragrunt validate --terragrunt-working-dir "${paths[i]}"
          done
       elif [ "$action" == "plan" ]; then
-        # TODO: loop over unique login-methods
+        # TODO: loop over unique logins
         readarray -td '' umethods< <(printf '%s\0' "${pmethods[@]}" | LC_ALL=C sort -zu)
         for m in "${umethods[@]}"; do
          _cliLogin "$m"
