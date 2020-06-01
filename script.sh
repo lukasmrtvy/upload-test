@@ -22,8 +22,6 @@ _validate () {
     fail=true
   fi
   
-  echo "$fail"
-
   for i in .name .path; do
     if ! jq --arg type $i -c '(unique_by($type)|length) as $unique | length == $unique' "$projectsPath" > /dev/null 2>&1 ; then
       _logMessage error "Name and Path must be unique."
@@ -31,9 +29,7 @@ _validate () {
     fi
   done
   
-  echo "$fail"
-
-  jq -r  '.[] | "" + .name + " " + .path' "$projectsPath" | while read -r name path; do
+  while read -r name path; do
 
     _logMessage info "Validating project: $name ."
 
@@ -41,10 +37,8 @@ _validate () {
       _logMessage error "Project $name must contain terragrunt.hcl file."
       fail=true
     fi
-  done
+  done < <(jq -r  '.[] | "" + .name + " " + .path + " " + .login' "$projectsPath")
   
-  echo "$fail"
-
   if $fail; then
     _logMessage error "Failed."
     exit 1
@@ -91,7 +85,6 @@ _getProjectsToChange () {
     fi
   else
      while read -r pname ppath pmethod ; do
-      echo "A: $pname $ppath $pmethod"
       if ! git diff --exit-code --quiet "$range" -- "$ppath"; then
         echo "B: $pname $ppath $pmethod"
         _logMessage info "Project: $pname will be changed."
@@ -99,31 +92,54 @@ _getProjectsToChange () {
         pnames+=( "$pname" )
         ppaths+=( "$ppath" )
         pmethods+=( "$pmethod" )
-        
-        echo "${pnames[@]}"
-        echo "${ppaths[@]}"
-        echo "${pmethods[@]}"
-        echo "${#pnames[@]}"
-        echo "${#ppaths[@]}"
-        echo "${#pmethods[@]}"
-        
-        if (( "${#pnames[@]}" > 0 )); then 
-          echo zajimave
-        else
-          echo nezajimave
-        fi
-        
+                
       fi
     done < <(jq -r  '.[] | "" + .name + " " + .path + " " + .login' "$projectsPath")
   fi
 
-   echo "${#pnames[@]}"
-   echo "${pnames[@]}"
-
-  if (( "${#pnames[@]}" > 0 )); then 
-    echo zajimave
-  else
-    echo nezajimave
+  if (( "${#pnames[@]}" > 0 )); then
+   if [ "$action" == "validate" ]; then
+      for i in ${#pnames[@]}; do
+         TERRAGRUNT_DISABLE_INIT="true" terragrunt validate --terragrunt-working-dir "${ppaths[i]}"
+      done
+   elif [ "$action" == "plan" ]; then
+     # TODO: loop over unique logins
+     readarray -td '' umethods< <(printf '%s\0' "${pmethods[@]}" | LC_ALL=C sort -zu)
+     for m in "${umethods[@]}"; do
+      _cliLogin "$m"
+     done
+     for i in ${#pnames[@]}; do
+        terragrunt plan --terragrunt-working-dir "${ppaths[i]}"
+     done
+     for m in "${umethods[@]}"; do
+      _cliLogout "$m"
+     done
+   elif [ "$action" == "apply" ]; then
+     readarray -td '' umethods< <(printf '%s\0' "${pmethods[@]}" | LC_ALL=C sort -zu)
+     for m in "${umethods[@]}"; do
+      _cliLogin "$m"
+     done
+     for i in ${#pnames[@]}; do
+        terragrunt apply --auto-apply --terragrunt-working-dir "${ppaths[i]}"
+     done
+     for m in "${umethods[@]}"; do
+      _cliLogout "$m"
+     done
+   elif [ "$action" == "destroy" ]; then
+     readarray -td '' umethods< <(printf '%s\0' "${pmethods[@]}" | LC_ALL=C sort -zu)
+     for m in "${umethods[@]}"; do
+      _cliLogin "$m"
+     done
+     for i in ${#pnames[@]}; do
+        terragrunt destroy --auto-apply --terragrunt-working-dir "${ppaths[i]}"
+     done
+     for m in "${umethods[@]}"; do
+      _cliLogout "$m"
+     done
+   fi
+  elif (( "${#pnames[@]}" == 0 )); then
+   echo "no changes"
+   exit 0
   fi
 
 }
