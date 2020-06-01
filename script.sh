@@ -117,10 +117,13 @@ _getProjectsToChange () {
     done
   fi
 
-  if (( "${#pnames[@]}" > 0 )); then
-     echo "A"
-  elif (( "${#pnames[@]}" == 0 )); then
-     echo "B"
+   echo "${#pnames[@]}"
+   echo "${pnames[@]}"
+
+  if (( "${#pnames[@]}" > 0 )); then 
+    echo zajimave
+  else
+    echo nezajimave
   fi
 
 }
