@@ -37,7 +37,7 @@ _validate () {
       _logMessage error "Project $name must contain terragrunt.hcl file."
       fail=true
     fi
-  done < <(jq -r  '.[] | "" + .name + " " + .path + " " + .login' "$projectsPath")
+  done < <(jq -r  '.[] | "" + .name + " " + .path' "$projectsPath")
   
   if $fail; then
     _logMessage error "Failed."
