@@ -101,7 +101,7 @@ _getProjectsToChange () {
       fi
     done
 
-    if [ "${#pnames[@]}" -gt 0 ]; then
+    if [ "${pnames[@]}" -gt 0 ]; then
       if [ "$action" == "validate" ]; then
          for i in ${#pnames[@]}; do
             TERRAGRUNT_DISABLE_INIT="true" terragrunt validate --terragrunt-working-dir "${paths[i]}"
@@ -141,7 +141,7 @@ _getProjectsToChange () {
          _cliLogout "$m"
         done
       fi
-    elif [ "${#pnames[@]}" -eq 0 ]; then
+    elif [ "${pnames[@]}" -eq 0 ]; then
       echo "no changes"
       exit 0
     fi
