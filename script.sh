@@ -84,20 +84,20 @@ _getProjectsToChange () {
       ppath=$(jq --arg pname "$PROJECT" -r  '.[] |  select(.name == $pname ).path' "$projectsPath")
       pmethod=$(jq --arg pname "$PROJECT" -r  '.[] |  select(.name == $pname ).login' "$projectsPath")
 
-      pnames+=("$PROJECT")
-      ppaths+=("$ppath")
-      pmethods+=("$pmethod")
+      pnames+=( "$PROJECT" )
+      ppaths+=( "$ppath" )
+      pmethods+=( "$pmethod" )
 
     fi
   else
-    jq -r  '.[] | "" + .name + " " + .path' "$projectsPath" | while read -r name path login; do
+    jq -r  '.[] | "" + .name + " " + .path + " " + .login' "$projectsPath" | while read -r pname ppath pmethod ; do
       if ! git diff --exit-code --quiet "$range" -- "$path"
       then
         _logMessage info "Project: $name will be changed."
 
-        pnames+=("$name")
-        ppaths+=("$path")
-        pmethods+=("$login")
+        pnames+=( "$pname" )
+        ppaths+=( "$ppath" )
+        pmethods+=( "$pmethod" )
       fi
     done
 
