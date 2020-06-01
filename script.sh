@@ -91,8 +91,10 @@ _getProjectsToChange () {
     fi
   else
     jq -r  '.[] | "" + .name + " " + .path + " " + .login' "$projectsPath" | while read -r pname ppath pmethod ; do
+      echo "A: $pname $ppath $pmethod"
       if ! git diff --exit-code --quiet "$range" -- "$ppath"
       then
+        echo "B: $pname $ppath $pmethod"
         _logMessage info "Project: $pname will be changed."
 
         pnames+=( "$pname" )
