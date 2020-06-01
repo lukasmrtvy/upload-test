@@ -15,7 +15,7 @@ _logMessage () {
 
 _validate () {
 
-  #local fail=false
+  local fail=false
 
   if ! yajsv -q -s "$schemaPath" "$projectsPath" ; then
     _logMessage error "Invalid schema."
