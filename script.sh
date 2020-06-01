@@ -97,9 +97,9 @@ _getProjectsToChange () {
     done < <(jq -r  '.[] | "" + .name + " " + .path + " " + .login' "$projectsPath")
   fi
 
-if (( "${!pnames[@]}" > 0 )); then
+if (( "${#pnames[@]}" > 0 )); then
  if [ "$action" == "validate" ]; then
-    for i in ${#pnames[@]}; do
+    for i in ${!pnames[@]}; do
        TERRAGRUNT_DISABLE_INIT="true" terragrunt validate --terragrunt-working-dir "${ppaths[i]}"
     done
  elif [ "$action" == "plan" ]; then
@@ -108,7 +108,7 @@ if (( "${!pnames[@]}" > 0 )); then
    for m in "${umethods[@]}"; do
     _cliLogin "$m"
    done
-   for i in ${#pnames[@]}; do
+   for i in ${!pnames[@]}; do
       terragrunt plan --terragrunt-working-dir "${ppaths[i]}"
    done
    for m in "${umethods[@]}"; do
@@ -119,7 +119,7 @@ if (( "${!pnames[@]}" > 0 )); then
    for m in "${umethods[@]}"; do
     _cliLogin "$m"
    done
-   for i in ${#pnames[@]}; do
+   for i in ${!pnames[@]}; do
       terragrunt apply --auto-apply --terragrunt-working-dir "${ppaths[i]}"
    done
    for m in "${umethods[@]}"; do
@@ -130,14 +130,14 @@ if (( "${!pnames[@]}" > 0 )); then
    for m in "${umethods[@]}"; do
     _cliLogin "$m"
    done
-   for i in ${#pnames[@]}; do
+   for i in ${!pnames[@]}; do
       terragrunt destroy --auto-apply --terragrunt-working-dir "${ppaths[i]}"
    done
    for m in "${umethods[@]}"; do
     _cliLogout "$m"
    done
  fi
-elif (( "${!pnames[@]}" == 0 )); then
+elif (( "${#pnames[@]}" == 0 )); then
  echo "no changes"
  exit 0
 fi
