@@ -21,6 +21,8 @@ _validate () {
     _logMessage error "Invalid schema."
     fail=true
   fi
+  
+  echo "$fail"
 
   for i in .name .path; do
     if ! jq --arg type $i -c '(unique_by($type)|length) as $unique | length == $unique' "$projectsPath" > /dev/null 2>&1 ; then
@@ -28,6 +30,8 @@ _validate () {
       fail=true
     fi
   done
+  
+  echo "$fail"
 
   jq -r  '.[] | "" + .name + " " + .path' "$projectsPath" | while read -r name path; do
 
@@ -38,6 +42,8 @@ _validate () {
       fail=true
     fi
   done
+  
+  echo "$fail"
 
   if $fail; then
     _logMessage error "Failed."
