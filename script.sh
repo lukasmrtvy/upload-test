@@ -19,7 +19,8 @@ _validate () {
 
   if ! yajsv -q -s "$schemaPath" "$projectsPath" ; then
     _logMessage error "Invalid schema."
-    fail=true
+    _logMessage error "Failed."
+    exit 1
   fi
   
   for i in .name .path; do
