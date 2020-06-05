@@ -180,6 +180,7 @@ if [ -z "$SLACK_TOKEN" ] && [ -z "$SLACK_CHANNEL" ]; then
   _logMessage warn "SLACK_TOKEN and SLACK_CHANNEL must be set. Skipping Slack Notification"
 else
   #curl slack
+  echo slack
 fi
 }
 
@@ -188,6 +189,7 @@ if [ -z "$SMTP_TOKEN" ] && [ -z "$SMTP_URL" ]; then
   _logMessage warn "SMTP_TOKEN and SMTP_URL must be set. Skipping Email Notification"
 else
   #curl ses
+  echo ses
 fi
 }
 
