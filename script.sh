@@ -110,7 +110,7 @@ if (( "${#pnames[@]}" > 0 )); then
     _cliLogin "$m"
    done
    for i in ${!pnames[@]}; do
-      terragrunt plan --terragrunt-working-dir "${ppaths[i]}"
+      terragrunt plan -out "planfile" --terragrunt-working-dir "${ppaths[i]}"
    done
    for m in "${umethods[@]}"; do
     _cliLogout "$m"
@@ -121,7 +121,7 @@ if (( "${#pnames[@]}" > 0 )); then
     _cliLogin "$m"
    done
    for i in ${!pnames[@]}; do
-      terragrunt apply -auto-approve --terragrunt-working-dir "${ppaths[i]}"
+      terragrunt apply -auto-approve -input=false "planfile" --terragrunt-working-dir "${ppaths[i]}"
    done
    for m in "${umethods[@]}"; do
     _cliLogout "$m"
